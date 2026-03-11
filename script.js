@@ -60,19 +60,40 @@ function barrejaTauler(iteracions = 100) {
 
 // Dibuixa el tauler al DOM
 function renderTauler() {
-    gridElement.innerHTML = '';
+    gridElement.innerHTML = ''; // Netejar
+    gridElement.style.position = 'relative';
+    gridElement.style.width = '300px';
+    gridElement.style.height = '300px';
 
     for (let fila = 0; fila < FILES; fila++) {
         for (let col = 0; col < COLUMNES; col++) {
             const valor = tauler[fila][col];
             const casella = document.createElement('div');
             casella.className = 'casella';
+            
+            // Asignar la posición visual según la posición EN LA MATRIZ (no según el número)
+            casella.style.transform = `translate(${col * 100}px, ${fila * 100}px)`;
+            
             if (valor === 0) {
                 casella.classList.add('buit');
-                casella.textContent = '';
+                casella.textContent = ''; // Vacío
             } else {
+                // Para depuración, dejamos el número pequeño (luego lo quitamos)
                 casella.textContent = valor;
+                
+                // Asignar el fragmento de imagen según el NÚMERO de la pieza (1-8)
+                // Pero OJO: la posición de la imagen depende de dónde DEBERÍA estar esa pieza
+                // cuando el puzzle esté resuelto. Es decir, la pieza con número 1 debe mostrar
+                // la esquina superior izquierda de la imagen.
+                
+                // Calculamos la fila y columna que le tocaría a esta pieza en el estado resuelto
+                const filaResolt = Math.floor((valor - 1) / COLUMNES);
+                const colResolt = (valor - 1) % COLUMNES;
+                
+                // Ajustamos el background-position para que muestre ese fragmento
+                casella.style.backgroundPosition = `-${colResolt * 100}px -${filaResolt * 100}px`;
             }
+            
             casella.addEventListener('click', () => clicCasella(fila, col));
             gridElement.appendChild(casella);
         }

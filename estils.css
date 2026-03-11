@@ -73,3 +73,42 @@ h1 {
     color: green;
     margin-top: 20px;
 }
+
+/* Contenedor del puzzle con posición relativa para animación */
+#puzzle-grid {
+    position: relative;
+    width: 300px;  /* 3 casillas * 100px */
+    height: 300px;
+}
+
+/* Estilo base para cada pieza */
+.casella {
+    position: absolute;  /* Necesario para animar con transform */
+    width: 100px;
+    height: 100px;
+    background-image: url('imatges/puzzle.jpg'); /* Ruta de tu imagen */
+    background-size: 300px 300px; /* Tamaño total de la imagen */
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    transition: transform 0.3s ease; /* Animación suave */
+    cursor: pointer;
+    /* Quitamos el display:flex anterior para que no interfiera */
+    display: block;
+    line-height: 100px; /* Para centrar texto si lo dejamos de prueba */
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Casilla vacía: sin imagen de fondo, solo color */
+.casella.buit {
+    background-image: none;
+    background-color: #ccc;
+    cursor: default;
+}
+
+/* Cuando el puzzle esté resuelto, podemos quitar los números de prueba */
+.casella.resolt {
+    color: transparent;
+    text-shadow: none;
+}
