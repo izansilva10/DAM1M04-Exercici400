@@ -62,3 +62,62 @@ resetButton.addEventListener('click', reiniciar);
 
 // Inicialitzar
 renderTauler();
+
+// Troba la posició del buit (retorna {fila, col})
+function trobaBuit() {
+    for (let f = 0; f < FILES; f++) {
+        for (let c = 0; c < COLUMNES; c++) {
+            if (tauler[f][c] === 0) {
+                return { fila: f, columna: c };
+            }
+        }
+    }
+    return null; // no hauria de passar mai
+}
+
+function clicCasella(fila, col) {
+    const buit = trobaBuit();
+    const df = fila - buit.fila;
+    const dc = col - buit.columna;
+
+    if (Math.abs(df) + Math.abs(dc) === 1) {
+        console.log('Moviment vàlid!');
+        // Aquí farem l'intercanvi després
+    } else {
+        console.log('Moviment invalid!');
+    }
+}
+
+function clicCasella(fila, col) {
+    const buit = trobaBuit();
+    const df = fila - buit.fila;
+    const dc = col - buit.columna;
+
+    if (Math.abs(df) + Math.abs(dc) === 1) {
+        // Intercanviar valors a la matriu
+        tauler[buit.fila][buit.columna] = tauler[fila][col];
+        tauler[fila][col] = 0;
+
+        // Incrementar moviments
+        moviments++;
+        movimentSpan.textContent = moviments;
+
+        // Tornar a dibuixar el tauler
+        renderTauler();
+
+        // Comprovar si està resolt
+        comprovaResolt();
+    }
+}
+
+function comprovaResolt() {
+    for (let f = 0; f < FILES; f++) {
+        for (let c = 0; c < COLUMNES; c++) {
+            if (tauler[f][c] !== taulerResolt[f][c]) {
+                return; // encara no està resolt
+            }
+        }
+    }
+    // Si arribem aquí, està resolt!
+    missatgeDiv.textContent = `Has resolt el puzle en ${moviments} moviments.`;
+}
