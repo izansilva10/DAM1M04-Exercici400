@@ -129,7 +129,7 @@ function clicCasella(fila, col) {
         renderTauler();
 
         if (comprovaResolt()) {
-            missatgeDiv.textContent = `🎉 Felicitats! Has resolt el puzle en ${moviments} moviments.`;
+            missatgeDiv.textContent = `Has resolt el puzle en ${moviments} moviments.`;
         } else {
             missatgeDiv.textContent = ''; // neteja missatge si no està resolt
         }
