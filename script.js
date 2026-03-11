@@ -75,6 +75,36 @@ function trobaBuit() {
     return null; // no hauria de passar mai
 }
 
+function barrejaTauler(iteracions = 100) {
+    for (let i = 0; i < iteracions; i++) {
+        const buit = trobaBuit();
+        const movimentsPossibles = [];
+
+        // Mirar les 4 direccions: amunt, avall, esquerra, dreta
+        const direccions = [
+            { df: -1, dc: 0 }, // amunt
+            { df: 1, dc: 0 },  // avall
+            { df: 0, dc: -1 }, // esquerra
+            { df: 0, dc: 1 }   // dreta
+        ];
+
+        for (const dir of direccions) {
+            const novaFila = buit.fila + dir.df;
+            const novaCol = buit.columna + dir.dc;
+            if (novaFila >= 0 && novaFila < FILES && novaCol >= 0 && novaCol < COLUMNES) {
+                movimentsPossibles.push({ fila: novaFila, col: novaCol });
+            }
+        }
+
+        // Escollir un moviment aleatori
+        const mov = movimentsPossibles[Math.floor(Math.random() * movimentsPossibles.length)];
+
+        // Intercanviar la peça amb el buit
+        tauler[buit.fila][buit.columna] = tauler[mov.fila][mov.col];
+        tauler[mov.fila][mov.col] = 0;
+    }
+}
+
 function clicCasella(fila, col) {
     const buit = trobaBuit();
     const df = fila - buit.fila;
@@ -120,4 +150,13 @@ function comprovaResolt() {
     }
     // Si arribem aquí, està resolt!
     missatgeDiv.textContent = `Has resolt el puzle en ${moviments} moviments.`;
+}
+
+function reiniciar() {
+    tauler = JSON.parse(JSON.stringify(taulerResolt)); // comencem des del resolt
+    barrejaTauler(100); // barregem fent 100 moviments aleatoris
+    moviments = 0;
+    movimentSpan.textContent = moviments;
+    missatgeDiv.textContent = '';
+    renderTauler();
 }
